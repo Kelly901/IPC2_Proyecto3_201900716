@@ -12,7 +12,7 @@ class CargarArchivo:
         mensaje=fi.read()
         #print(mensaje)
         
-        conversion=re.sub(r'<.+(.+@.+)>|<(.+@.+)>',r'\1\2',mensaje)
+        conversion=re.sub(r'<+@>',r'\1\2',mensaje)
         print(conversion)
 
         #tree=ET.parse(ruta)

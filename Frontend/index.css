@@ -1,0 +1,123 @@
+body{
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(180deg,#1b2f85,#01255c,#05235c,#021333,rgb(0, 0, 0));
+    background-size: cover;
+    font-family: sans-serif;
+
+}
+#linea{
+    height: 40px;
+    border: #080e1a 5px solid;
+    background-color: #080e1a;
+}
+.botones{
+
+   
+ 
+    height: auto;
+    border: rgb(2, 13, 73) 5px solid;
+    color: #fff;
+    background-color: rgb(4, 20, 63);
+    justify-content: center;
+    align-items: center;
+    
+    
+}
+.botones #b1{
+    width: 200px;
+    height: 50px;
+    margin: 0px 4px;
+    cursor: pointer;
+    text-align: center;
+    transition: all o.2s ease 0s;
+    font-weight: bold;
+    box-shadow: 6px 6px 6px #81838d;
+    font-size: 20px;
+   
+
+    
+}
+
+.botones #b1:active{
+    box-shadow: 2px 2px 2px #777, 0px 0px 35px
+    0px #00b7f8 ;
+    transform: translate(4px);
+    transition: all 0.1s ease 0s;
+}
+/*Area */
+.area{
+    height: auto;
+   
+}
+.area #label1{
+    margin: 20px 40px;
+    color: white;
+    font-size: 27px;
+    font-weight: 700;
+
+}
+
+.area #label2{
+    color: white;
+    margin: 20px 500px;
+    font-size: 27px;
+    font-weight: 700;
+}
+/*Boton enviar*/
+.area #enviar{
+    width: 130px;
+    height: 50px;
+    font-size: 17px;
+    cursor: pointer;
+    text-align: center;
+    transition: all o.2s ease 0s;
+    font-weight: bold;
+    box-shadow: 6px 6px 6px #81838d;
+    
+}
+
+
+.area #enviar:active{
+    box-shadow: 2px 2px 2px #777, 0px 0px 35px
+    0px #00b7f8 ;
+    transform: translate(4px);
+    transition: all 0.1s ease 0s;
+    
+}
+.area #enviar:hover{
+    color: blue; 
+
+}
+/*Boton Reset*/
+
+.area #reset{
+    width: 130px;
+    height: 50px;
+    margin: 0px 510px;
+    font-size: 17px;
+    cursor: pointer;
+    text-align: center;
+    transition: all o.2s ease 0s;
+    font-weight: bold;
+    box-shadow: 6px 6px 6px #81838d;
+    
+}
+.area #reset:active{
+    box-shadow: 2px 2px 2px #777, 0px 0px 35px
+    0px #00b7f8 ;
+    transform: translate(4px);
+    transition: all 0.1s ease 0s;
+}
+.area #reset:hover{
+    color: blue; 
+
+}
+
+.area #area1{
+    margin: 5px 35px;
+}
+
+.area #area2{
+    margin: 10px 120px;
+}
