@@ -38,6 +38,12 @@ body{
 
     
 }
+.botones #cargar{
+    width: 500px;
+    height: 50px;
+    font-size: 20px;
+    
+}
 
 .botones #b1:active{
     box-shadow: 2px 2px 2px #777, 0px 0px 35px
