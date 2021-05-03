@@ -20,3 +20,58 @@ class GuardarDatos:
             print("Codigo:  ",i.codigo)
             print("Descripcion  ",i.descripcion)
             print("____________")
+
+
+    def comparar(self):
+        fechas=[]
+        fecha=[]
+        for i in self.datos:
+            
+            fechas.append(i.fecha)
+        print(fechas)    
+
+        for j in fechas:
+            if j  not in fecha: 
+                fecha.append(j)
+        print(fecha)
+       
+        for i in fecha:
+            print(">>>>Fecha "+i+"<<<<<<<<<\n")
+            listaU=[]
+            listaU2=[]
+            for j in self.datos:
+                if i==j.fecha:
+                    listaU.append(j.correo)
+            
+            for k in listaU:
+              
+                if k not in listaU2:
+                    listaU2.append(k)
+                   
+                        
+
+            print(listaU)        
+            print(listaU2)
+
+            for h in listaU2:
+                cont=0
+                for d in listaU:
+                    if h==d:
+                        cont+=1
+                print(cont)
+            '''for d in self.datos:
+                
+                if i==d.fecha:
+                    
+                    for lis in listaU2:
+                        contador=0
+                        if lis==d.correo:
+                            print(lis)
+                            contador+=1
+                        print(contador)  '''          
+                    #print("Correo del empleado:",j.correo)
+            print("\n\n")   
+
+
+
+                    

@@ -42,14 +42,19 @@ patron=re.compile("[0-3]\d/[0-1]\d/\d+")
 fecha=re.search(patron, cadena)
 
 #print(fecha.group())
-cadena3="Error:   213333: La computadora esta superererere lenta viera"    
-patron2=re.compile(":\s+\w[\w\s]+")
-descripcion=patron2.findall(cadena3)
-print(descripcion)
-print(descripcion[1])
-descripcion2=re.search(r'[\w]+[\s\w]+', descripcion[1])
-print(descripcion2.group())
+cadena3="Error:   213333 -La computadora esta superererere lenta viera"    
+patron2=re.compile("-\s+\w[\w\s]+|-\w[\w\s]+")
+descripcion=patron2.search(cadena3)
+des2=descripcion.group()
+descripcion1=re.search(r'[\w]+[\s\w]+', des2)
+descrip=descripcion1.group()
+print(descrip)
+
+
+
 lista3=[]
 lista4=[1,2,3,4,4,5]
 lista3=lista4
 print(lista3)
+
+

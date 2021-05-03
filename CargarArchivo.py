@@ -14,8 +14,10 @@ class CargarArchivo:
         ruta = r''+ruta1
         fi = open(ruta1, encoding="utf8")
         mensaje = fi.read()
-
+        #print(mensaje)
+        print("\n....\n")
         lista = mensaje.split("\n")
+        print(lista)
         # print(lista)
         #
         texto = auto.automata(lista)
@@ -27,44 +29,52 @@ class CargarArchivo:
         #Patron para el correo
         patronN=re.compile(r'\w+@[\w\.\w]+')
         #Patron para codigo de error
-        patronE=re.compile(r'\d+')
+        patronE=re.compile(r'Error: [\d]+')
         #Patron de descripción
-        patronD=re.compile(":\s+\w[\w\s]+")
+        patronD=re.compile("-\s+\w[\w\s]+|-\w[\w]+|\s+\w[\w\s],")
 
         
 
         for i in range(0,len(eventos)-1):
             print("__________________________")
-
-            lista2 = eventos[i].split("$")
+            #print(eventos[i])
+            
+            #lista2 = eventos[i].split("$")
             #Fecha
-            fecha=patronF.search(lista2[0])
+            fecha=patronF.search(eventos[i])
             #Correo del empleado 
-            correo1=patronN.search(lista2[1])
-            print(lista2[1])
-            print(fecha.group())
-            print(correo1.group())
+            correo1=patronN.search(eventos[i])
+            #print(lista2[1])
+            print("Fecha:",fecha.group())
+            print("Correo:",correo1.group())
             #Correo de los afectados
-            correosAfectados=patronN.findall(lista2[2])
-            print(correosAfectados)
+            correosAfectados=patronN.findall(eventos[i])
+            print("Correos afectados:",correosAfectados)
+            listaC=[]
+            for c in range(1,len(correosAfectados)):
+                listaC.append(correosAfectados[c])
             #Codigo del error
-            error=patronE.search(lista2[3])
-            print(error.group())
+            error=patronE.search(eventos[i])
+            #print(error.group())
+            codigo=re.search(r'[\d]+', error.group())
+            print(codigo.group())
+
             #Descripcion
-            cadenaTemp=patronD.findall(lista2[3])
-            descrip=""
-            descripcion=re.search(r'[\w]+[\s\w]+', cadenaTemp[1])
-            descrip=descripcion.group()
+            cadenaTemp=patronD.search(eventos[i])
+            print(cadenaTemp.group())
+            #descrip=""
+            #descripcion=re.search(r'[\w]+[\s\w]+', cadenaTemp.group())
+            #descrip=descripcion.group()
             #print(descripcion.group())
-            for j in range(4,len(lista2)-1):
+            #for j in range(4,len(lista2)-1):
                 #print(lista2[j])    
-                descrip+="\n"+lista2[j]          
-            print(descrip)
-            guardar.guardarDatos(fecha.group(), correo1.group(),correosAfectados,error.group(), descrip)
+                #descrip+="\n"+lista2[j]          
+            #print(descrip)
+            guardar.guardarDatos(fecha.group(), correo1.group(),listaC,codigo.group(), cadenaTemp.group())
         
         #Imprimir
-        guardar.imprimir()
-        
+        #guardar.imprimir()
+        guardar.comparar()
         
         
         '''for i in lista:
@@ -105,9 +115,11 @@ class CargarArchivo:
 # C:\Users\Kelly\Desktop\[IPC2]Proyecto3\IPC2_Proyecto3_201900716\prueba2.xml
 # C:\Users\Kelly\Downloads\data.txt
 # C:\Users\Kelly\Downloads\entrada.xml
-c = CargarArchivo()
-c.procesar()
+#C:\Users\Kelly\Downloads\entrada1.xml
+
 '''parser=ET.XMLParser(encoding="utf-8")
     tree=ET.fromstring(ruta,parser=parser)
     tree=ET.parse(ruta)
     '''
+#cargar=CargarArchivo()
+#cargar.procesar()

@@ -17,7 +17,7 @@ class Automata:
                     error += lista[pos]
                     pos += 1
             elif estado == 1:
-                if lista[pos] != "<EVENTO>" and lista[pos] != "</EVENTO>":
+                if lista[pos] !="\t<EVENTO>" and lista[pos] != "\t</EVENTO>":
                     estado = 2
                     cadena1 += lista[pos]+"$"
                     pos += 1
@@ -25,10 +25,10 @@ class Automata:
                     error += lista[pos]
                     pos += 1
             elif estado == 2:
-                if lista[pos] != "</EVENTO>":
-                    cadena1 += lista[pos]+"$"
+                if lista[pos] != "\t</EVENTO>":
+                    cadena1 += lista[pos]
                     pos += 1
-                elif lista[pos] == "</EVENTO>":
+                elif lista[pos] == "\t</EVENTO>":
                     estado = 1
                     cadena1 += "\n"
                     pos += 1
