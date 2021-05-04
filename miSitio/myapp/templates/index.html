@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagina Principal</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'index.css' %}">
+</head>
+<body>
+    <div id="linea">
+
+    </div>
+    <div class="botones">
+        <form action="/recibir/" method="POST">
+            <input id="cargar" type="file">
+        </form>
+        
+        <button id="b1">Peticiones</button>
+        <button id="b1">Ayuda</button>
+        
+     </div>
+     <br>
+    <div class="area">
+        <form action="/pagina/" method="GET">
+            {% csrf_token %}
+            
+            <button type="submit" id="enviar">Enviar</button>
+        </form>   
+            
+        
+
+        <form action="/resetear/" method="GET">
+            {% csrf_token %}
+            <button type="submit" id="reset">Reset</button>
+        </form>
+        <br><br>
+        <form action="/pagina2/" method="GET">
+            <textarea class="area1" name="area1" id="area1" cols="65" rows="35">{{variable.archivo}}</textarea>
+        </form>
+            
+        
+        <form action="/pagina/" method="GET">
+            {% csrf_token %}
+            
+            <label for="text" id="label2">Salida</label> <br><br>
+            <textarea class="area2" name="area2" id="area2" cols="65" rows="35">{{variable.valor}}</textarea>
+        </form>
+    </div>
+    
+</body>
+</html>

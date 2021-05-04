@@ -22,13 +22,21 @@ def mostrarXml():
     cargarA.procesar()
     root=ET.Element("EVENTOS")
     
-    cadena=""
+    cadena="<EVENTOS>\n"
     
     for d in GuardarDatos.datos:
         fecha=""
         correo=""
         usuarios=""
         error=""
+        #Cdena
+        cadena+="\t<EVENTO>"
+        cadena+="\n\t\tGuatemala, "+d.fecha+"\n"
+        cadena+="\t\tReportado por: "+d.correo+"\n"
+        cadena+="\t\tUsuaios afectados\n"
+        cadena+="\t\tError: "+d.codigo+"\n"
+        cadena+="\t</EVENTO>"
+        #Etiquetas del xml
         evento=ET.SubElement(root,"EVENTO")
         fecha="\n\t\tGuatemala, "+d.fecha+"\n"
         correo="\t\tReportado por: "+d.correo+"\n"
@@ -36,11 +44,14 @@ def mostrarXml():
         error="\t\tError: "+d.codigo+"\n"
         
         evento.text=fecha+correo+usuarios+error
-        
+    cadena+="</EVENTOS>"    
     #print(cadena)
+    app.response_class(ET.tostring(root),mimetype='aplication/xml')
     
-
-    return app.response_class(ET.tostring(root),mimetype='aplication/xml')
+    archivoXml={
+        'archivo': cadena
+    }
+    return jsonify(archivoXml)
 
 #Estadistica
 @app.route("/estadistica",methods=['GET'])
@@ -169,6 +180,14 @@ def mostrarEstadistica():
     
 
     return app.response_class(ET.tostring(root),mimetype='aplication/xml')
+#
+@app.route("/ejemplo",methods=['GET'])
+def ejemplos():
+    respuesta={
+        'valor':'sale ipc2'
+        
+    }
+    return jsonify(respuesta)
 #        
 @app.route("/")
 def index():
