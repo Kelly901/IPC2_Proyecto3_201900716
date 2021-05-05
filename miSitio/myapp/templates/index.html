@@ -21,31 +21,44 @@
         <button id="b1">Ayuda</button>
         
      </div>
-     <br>
-    <div class="area">
-        <form action="/pagina/" method="GET">
-            {% csrf_token %}
-            
-            <button type="submit" id="enviar">Enviar</button>
-        </form>   
-            
-        
 
-        <form action="/resetear/" method="GET">
+    <div class="area" style="height: 1000px;">
+        
+        <form id="form1" action="/pagina/" method="GET">
             {% csrf_token %}
-            <button type="submit" id="reset">Reset</button>
-        </form>
-        <br><br>
-        <form action="/pagina2/" method="GET">
+            <br>
+            <button type="submit" id="enviar">Enviar</button><br> <br><br>
+            <label for="text" id="label1">Entrada</label> <br><br>
+        </form> 
+        
+        <form action="/resetear/" method="GET" style="margin: -120px 520px;">
+            {% csrf_token %}
+            <button type="submit" id="reset" >Reset</button>
+            
+        </form>    
+        
+        <br>
+        
+      
+        {% if mostrar %}  
+        <form action="/pagina2/" method="GET" style="margin: 140px 0px;">
+            {% csrf_token %}   
             <textarea class="area1" name="area1" id="area1" cols="65" rows="35">{{variable.archivo}}</textarea>
         </form>
             
-        
-        <form action="/pagina/" method="GET">
+        {% else %}
+        <form action="/pagina/" method="GET" style="margin: 140px 0px;">
             {% csrf_token %}
+            <textarea class="area1" name="area1" id="area1" cols="65" rows="35">{{variable.datos}}</textarea>
+        </form>
+        {% endif %}
+         <form action="/pagina/" method="GET" style="margin: -720px 530px;">
+            {% csrf_token %}
+            <label for="text" id="label2" >Salida</label> 
+                
+            <textarea class="area2" name="area2" id="area2" cols="85" rows="45" >{{variable.estadistica}}</textarea>
+           
             
-            <label for="text" id="label2">Salida</label> <br><br>
-            <textarea class="area2" name="area2" id="area2" cols="65" rows="35">{{variable.valor}}</textarea>
         </form>
     </div>
     

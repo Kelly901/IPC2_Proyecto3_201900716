@@ -66,7 +66,7 @@ body{
 
 .area #label2{
     color: white;
-    margin: 20px 500px;
+   
     font-size: 27px;
     font-weight: 700;
 }
@@ -97,10 +97,10 @@ body{
 }
 /*Boton Reset*/
 
-.area #reset{
+.area  #reset{
     width: 130px;
     height: 50px;
-    margin: 0px 510px;
+    
     font-size: 17px;
     cursor: pointer;
     text-align: center;
@@ -124,6 +124,3 @@ body{
     margin: 5px 35px;
 }
 
-.area #area2{
-    margin: 10px 120px;
-}

@@ -42,7 +42,7 @@ class GuardarDatos:
             for j in self.datos:
                 if i==j.fecha:
                     listaU.append(j.correo)
-            
+                
             for k in listaU:
               
                 if k not in listaU2:
@@ -72,6 +72,30 @@ class GuardarDatos:
                     #print("Correo del empleado:",j.correo)
             print("\n\n")   
 
-
+    def mostrarEntrada(self):
+        cadena="<EVENTOS>\n"
+    
+        for d in self.datos:
+            fecha=""
+            correo=""
+            usuarios=""
+            error=""
+        #Cdena
+            cadena+="\t<EVENTO>"
+            cadena+="\n\t\tGuatemala, "+d.fecha+"\n"
+            cadena+="\t\tReportado por: "+d.correo+"\n"
+            cadena+="\t\tUsuaios afectados\n"
+            cadena+="\t\tError: "+d.codigo+"\n"
+            cadena+="\t</EVENTO>"
+        #Etiquetas del xml
+            
+            fecha="\n\t\tGuatemala, "+d.fecha+"\n"
+            correo="\t\tReportado por: "+d.correo+"\n"
+            usuarios="\t\tUsuaios afectados\n"
+            error="\t\tError: "+d.codigo+"\n"
+        
+            
+        cadena+="</EVENTOS>"         
+        return cadena       
 
                     
