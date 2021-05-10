@@ -1,4 +1,5 @@
 {% load static %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,25 +14,37 @@
 
     </div>
     <div class="botones">
-        <form action="/recibir/" method="POST">
-            <input id="cargar" type="file">
+        <form action="/pagina/" method="GET">
+            
+          
+            <button id="b1">Consultar Datos</button>
         </form>
-        
-        <button id="b1">Peticiones</button>
-        <button id="b1">Ayuda</button>
+        <form action="/fecha/">
+            <button id="b1">Reportes</button>
+        </form>
+
+        <form action="/ayuda/">
+            <button id="b1">Ayuda</button>
+        </form>
+       
         
      </div>
 
     <div class="area" style="height: 1000px;">
-        
+        <form action="/file/" method="POST"  enctype="multipart/form-data">
+            {% csrf_token %}
+        <input type="file" id="file" name="file" style="width: 470px; font-size: 19px;" >
+        <button type="submit" id="enviar">Enviar</button><br> <br><br>
+    </form>
+    
         <form id="form1" action="/pagina/" method="GET">
             {% csrf_token %}
             <br>
-            <button type="submit" id="enviar">Enviar</button><br> <br><br>
+            
             <label for="text" id="label1">Entrada</label> <br><br>
         </form> 
         
-        <form action="/resetear/" method="GET" style="margin: -120px 520px;">
+        <form action="/resetear/" method="GET" style="margin: -120px 660px;">
             {% csrf_token %}
             <button type="submit" id="reset" >Reset</button>
             
@@ -40,19 +53,19 @@
         <br>
         
       
-        {% if mostrar %}  
+        {% if content %}  
         <form action="/pagina2/" method="GET" style="margin: 140px 0px;">
             {% csrf_token %}   
-            <textarea class="area1" name="area1" id="area1" cols="65" rows="35">{{variable.archivo}}</textarea>
+            <textarea class="area1" name="area1" id="area1" cols="85" rows="35">{{content}}</textarea>
         </form>
             
         {% else %}
         <form action="/pagina/" method="GET" style="margin: 140px 0px;">
             {% csrf_token %}
-            <textarea class="area1" name="area1" id="area1" cols="65" rows="35">{{variable.datos}}</textarea>
+            <textarea class="area1" name="area1" id="area1" cols="85" rows="35">{{variable.datos}}</textarea>
         </form>
         {% endif %}
-         <form action="/pagina/" method="GET" style="margin: -720px 530px;">
+         <form action="/pagina/" method="GET" style="margin: -720px 670px;">
             {% csrf_token %}
             <label for="text" id="label2" >Salida</label> 
                 
@@ -64,3 +77,4 @@
     
 </body>
 </html>
+{% endblock content %}

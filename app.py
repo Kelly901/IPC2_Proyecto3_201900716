@@ -9,6 +9,7 @@ CORS(app)
 
 cargarA=CargarArchivo()
 guardar=GuardarDatos()
+archivo_xml=""
 #Recorrer xml
 @app.route("/cargar",methods=['POST'])
 def archivo():
@@ -16,10 +17,26 @@ def archivo():
     print(content_dict["EVENTO"])
     return content_dict
     
+#Metodo para cargar Archivo
+@app.route("/cargarArchivo",methods=['POST'])
+def cargarArchivo():
+    print("Hola")
+    archivo=request.json
+    archivo_xml=archivo['contenido']
+    cargarA.procesar(archivo['contenido'])
+    diccionario={
+        'contenido':archivo['contenido'],
+        'estadistica':guardar.retornarEstadistica()
+    }
+    #print(archivo['contenido'])
+    print(diccionario['contenido'])
+  
+    return jsonify(diccionario)
+
 #
 @app.route("/mostrarXml",methods=['GET'])
 def mostrarXml():
-    cargarA.procesar()
+    
     root=ET.Element("EVENTOS")
     
     cadena="<EVENTOS>\n"
@@ -33,14 +50,18 @@ def mostrarXml():
         cadena+="\t<EVENTO>"
         cadena+="\n\t\tGuatemala, "+d.fecha+"\n"
         cadena+="\t\tReportado por: "+d.correo+"\n"
-        cadena+="\t\tUsuaios afectados\n"
+        cadena+="\t\tUsuaios afectados:"
+        for corr in d.correos:
+            cadena+=corr+","
+        cadena+="\n"
         cadena+="\t\tError: "+d.codigo+"\n"
-        cadena+="\t</EVENTO>"
+        cadena+="\t</EVENTO\n>"
         #Etiquetas del xml
         evento=ET.SubElement(root,"EVENTO")
         fecha="\n\t\tGuatemala, "+d.fecha+"\n"
         correo="\t\tReportado por: "+d.correo+"\n"
-        usuarios="\t\tUsuaios afectados\n"
+        usuarios="\t\tUsuaios afectados:"
+        
         error="\t\tError: "+d.codigo+"\n"
         
         evento.text=fecha+correo+usuarios+error
@@ -56,169 +77,129 @@ def mostrarXml():
 #Estadistica
 @app.route("/estadistica",methods=['GET'])
 def mostrarEstadistica():
-    root=ET.Element("ESTADISTICAS")
     
-    cadena=""
-    cadena="<ESTADISTICAS>\n"
-    #--------
-    fechas=[]
-    fecha=[]
-    for i in GuardarDatos.datos:
-        fechas.append(i.fecha)
-        #print(fechas)    
-
-    for j in fechas:
-        if j  not in fecha: 
-            fecha.append(j)
-        #print(fecha)
-    for i in fecha:
-        #Lista para usuarios
-        listaU=[]
-        listaU2=[]
-        #Listas de errores
-        listaR=[]
-        listaR2=[]
-        #Contador de mensajes
-        cont=0
-        #Etqiueta de Estadistica
-        cadena+="\t<ESTADISTICA>\n"
-        estadistica=ET.SubElement(root,"ESTADISTICA")
-        #Etiqueta de Fecha
-        
-        etiquetaF=ET.SubElement(estadistica,"FECHA") 
-        etiquetaF.text=i
-        cadena+="\t\t<FECHA>"+i+"</FECHA>\n"
-        
-        #print(">>>>Fecha "+i+"<<<<<<<<<\n")
-        
-        for j in GuardarDatos.datos:
-            if i==j.fecha:
-                cont+=1
-                listaU.append(j.correo)
-                listaR.append(j.codigo)
-                
-                           
-        #Etiqueta de cantidad de mensajes  
-        # 
-             
-        etiquetM=ET.SubElement(estadistica,"CANTIDAD_MENSAJES")
-        etiquetM.text=str(cont)
-        cadena+="\t\t<CANTIDAD_MENSAJES>"+str(cont)+"</CANTIDAD_MENSAJES>\n" 
-        #Etiqueta de reportado por
-        cadena+="\t\t<REPORTADO_POR>\n"
-        etiquetaRepor=ET.SubElement(estadistica,"REPORTADO_POR")
-        #Recorrer la lista con los usurios para agregar a la otra lista de modo que no se repitan 
-        for k in listaU:
-              
-            if k not in listaU2:
-                listaU2.append(k)
-        #Recorrer la lista para llenar las etiquetas con los datos
-        for h in listaU2:
-            #Etiqueta usuario
-            cadena+="\t\t\t<USUARIO>\n"
-            etiquetaU=ET.SubElement(etiquetaRepor,"USUARIO") 
-            #Etiqueta Email del usuario
-            cadena+="\t\t\t"+"\t<EMAIL>"+h+"</EMAIL>\n"
-            etiquetaEmail=ET.SubElement(etiquetaU,"EMAIL")
-            etiquetaEmail.text=h
-            contador=0
-            for d in listaU:
-
-                if h==d:
-                    contador+=1
-            print(contador) 
-            #Etiqueta cantidad de mensajes reportados por el usuario
-            
-            etiquetaMens=ET.SubElement(etiquetaU,"CANTIDAD_MENSAJES")
-            etiquetaMens.text=str(contador)
-            cadena+="\t\t\t\t<CANTIDAD_MENSAJES>"+str(contador)+"</CANTIDAD_MENSAJES>\n"
-           
-            cadena+="\t\t\t</USUARIO>\n"
-        #Afectados
-        etiquetaAfec=ET.SubElement(estadistica, "AFECTADOS")
-        cadena+="\t\t<AFECTADOS>\n"
-        for j in GuardarDatos.datos:
-            if i==j.fecha:
-                
-               
-                for recorrer in j.correos:
-
-                    etiquetaAf=ET.SubElement(etiquetaAfec,"AFECTADO")
-                    cadena+="\t\t\t<AFECTADO>"+recorrer+"</AFECTADO>\n"
-                    etiquetaAf.text=recorrer  
-        cadena+="\t\t</AFECTADOS>\n"            
-        #Errores
-        for k in listaR:
-              
-            if k not in listaR2:
-                listaR2.append(k) 
-        #Recorrer las listas con los errores
-        cadena+="\t\t<ERRORES>\n"
-        etiquetaErr=ET.SubElement(estadistica,"ERRORES")
-        for h in listaR2:
-            #Etiqueta usuario
-            cadena+="\t\t\t<ERROR>"+h+"</ERROR>\n"
-            #Etiqueta Email del usuario
-            etiquetaError=ET.SubElement(etiquetaErr,"ERROR")
-            etiquetaError.text=h
-            contador=0
-            for d in listaR:
-                if h==d:
-                    contador+=1
-            print(contador) 
-            #
-            
-            #Etiqueta cantidad de mensajes reportados por el usuario
-            etiquetaCo=ET.SubElement(etiquetaErr,"CANTIDAD_MENSAJES")
-            etiquetaCo.text=str(contador)  
-            cadena+="\t\t\t<CANTIDAD_MENSAJES>"
-            cadena+=str(contador)
-            cadena+="<CANTIDAD_MENSAJES>\n"
-        cadena+="\t\t</ERRORES>\n"     
-        cadena+="\t</ESTADISTICA>\n"  
-    cadena+="</ESTADISTICAS>\n"               
-        #print("\n\n")
-
-
-
-
-    #------
-    '''for d in GuardarDatos.datos:
-        fecha1=""
-        correo=""
-        usuarios=""
-        error=""
-        if d.fecha:
-           fecha1=d.fecha
-           
-           correo1=ET.SubElement(estadistica,"USUARIO")
-           
-           
-           correo1.text=d.correo
-        evento=ET.SubElement(root,"PENDIENTE")
-        fecha="\n\t\tGuatemala, "+d.fecha+"\n"
-        correo="\t\tReportado por: "+d.correo+"\n"
-        usuarios="\t\tUsuaios afectados\n"
-        error="\t\tError: "+d.codigo+"\n"'''
-        
-        #evento.text=fecha+correo+usuarios+error
-        
-    #print(cadena)
-    #app.response_class(ET.tostring(root),mimetype='aplication/xml')
     estadist={
         'datos':guardar.mostrarEntrada(),
-        'estadistica':cadena
+        'estadistica':guardar.retornarEstadistica()
     }
     return jsonify(estadist)
 #
-@app.route("/ejemplo",methods=['GET'])
-def ejemplos():
-    respuesta={
-        'valor':'sale ipc2'
-        
+#Retornar Fechas
+@app.route("/fecha",methods=['GET'])
+def retornarFecha():
+    print("fecha")
+    fecha={
+        'fecha':guardar.fecha()
     }
-    return jsonify(respuesta)
-#        
+    print(fecha)
+    return jsonify(fecha)
+#
+@app.route("/opcion",methods=['POST'])
+def opciones():
+    archivo=request.json
+    respuesta={
+        'valor':archivo['dato']
+    }
+    listaU=[]
+    listaU2=[]
+    #
+    total_correos=0
+    for i in guardar.datos:
+        if i.fecha==respuesta['valor']:
+            listaU.append(i.correo)
+            total_correos+=1
+    #
+    for k in listaU:
+        if k not in listaU2:
+            listaU2.append(k)    
+    #   
+    cantidad_mensaje=[]
+    for h in listaU2:
+               
+               
+        contador=0
+        for d in listaU:
+
+            if h==d:
+                contador+=1
+        print(contador)  
+        cantidad_mensaje.append(contador)
+    print(cantidad_mensaje)  
+    porcentaje=[]
+    porc=0
+    for c in cantidad_mensaje:
+        porc=(c*100)/total_correos
+        aproximado=round(porc,2)
+        porcentaje.append(str(aproximado))
+        print(porcentaje)
+    
+    lista_completa=[]
+   
+    informacion={
+        'usuarios':listaU2,
+        'porcentaje':porcentaje,
+        'fecha':respuesta['valor']
+    }
+    return jsonify(informacion)
+# 
+@app.route("/opcionError",methods=['POST'])
+def opcionError():
+    archivo=request.json
+    respuesta={
+        'valor':archivo['dato']
+    }
+    listaU=[]
+    listaU2=[]
+    #
+    total_error=0
+    for i in guardar.datos:
+        if i.fecha==respuesta['valor']:
+            listaU.append(i.codigo)
+            total_error+=1
+    #
+    for k in listaU:
+        if k not in listaU2:
+            listaU2.append(k)    
+    #   
+    cantidad_mensaje=[]
+    for h in listaU2:
+               
+               
+        contador=0
+        for d in listaU:
+
+            if h==d:
+                contador+=1
+        print(contador)  
+        cantidad_mensaje.append(contador)
+    print(cantidad_mensaje)  
+    porcentaje=[]
+    porc=0
+    for c in cantidad_mensaje:
+        porc=(c*100)/total_error
+        aproximado=round(porc,2)
+        porcentaje.append(str(aproximado))
+        print(porcentaje)
+    
+   
+   
+    informacion={
+        'error':listaU2,
+        'porcentaje':porcentaje,
+        'fecha':respuesta['valor']
+    }
+    return jsonify(informacion)
+
+#vaciar el arreglo de objetos
+@app.route("/resetear",methods=['GET'])
+def resetear():
+    guardar.datos.clear()
+    mensaje={
+        'mensaeje':'Estado actual de la base datos: Vacia'
+    }
+    return jsonify(mensaje)
+    
+#      
 @app.route("/")
 def index():
     return "En linea"

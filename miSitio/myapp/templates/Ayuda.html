@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'Ayuda.css' %}">
+ 
+    </style>
+</head>
+<body>
+    <div id="linea">
+
+    </div>
+    <div id="linea2">
+        <label id="titulo" for="text">Sección D e Ayuda</label>
+    </div>
+    <div id="linea3">
+        <form action="/informacion/" method="GET">
+        
+            <button type="submit">Información</button>
+        </form>
+
+        <form action="" style="margin: -50px 300px;">
+            <button type="submit">Documentación</button>
+        </form>
+     
+    </div>
+    <div class="area" style="height: auto;">
+        {% if mensaje %}
+        
+        <h1>Datos del estudiante:</h1>
+      
+        <h1>Nombre: Kelly Mischel Herrera Espino</h1>
+        <h1>Carnet: 201900716</h1>
+        {% endif %}
+        
+      
+    </div>
+
+    
+</body>
+</html>

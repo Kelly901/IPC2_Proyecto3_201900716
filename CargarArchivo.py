@@ -8,12 +8,13 @@ auto = Automata()
 guardar=GuardarDatos()
 
 class CargarArchivo:
-
-    def procesar(self):
-        ruta1 = input("ingrese la ruta")
+    archivo_xml=""
+    def procesar(self,mensaje):
+        archivo_xml=mensaje
+        '''ruta1 = input("ingrese la ruta")
         ruta = r''+ruta1
         fi = open(ruta1, encoding="utf8")
-        mensaje = fi.read()
+        mensaje = fi.read()'''
         #print(mensaje)
         print("\n....\n")
         lista = mensaje.split("\n")
@@ -74,8 +75,8 @@ class CargarArchivo:
         
         #Imprimir
         #guardar.imprimir()
-        guardar.comparar()
-        
+        #guardar.comparar()
+        #guardar.retornarEstadistica()
         
         '''for i in lista:
             if i!="<EVENTO>" and i!="<EVENTOS>" and i!="</EVENTO>" and i!="</EVENTOS>":
@@ -121,5 +122,4 @@ class CargarArchivo:
     tree=ET.fromstring(ruta,parser=parser)
     tree=ET.parse(ruta)
     '''
-#cargar=CargarArchivo()
-#cargar.procesar()
+

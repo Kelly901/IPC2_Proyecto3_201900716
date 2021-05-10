@@ -1,0 +1,181 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'Reporte.css' %}">
+    <style>
+        h1{
+            font-family: 'Courier New', Courier, monospace;
+        }
+        #grafica{
+            width: auto;
+            height: auto;
+        }
+    </style>
+
+    <style>
+        .chart-wrap{
+            --chart-width:420px;
+            --grid-color:rgb(36, 28, 28);
+            --bar-color:#256aff;
+            --bar-thickness:40px;
+            --bar-rounded:3px;
+            --bar-spacing:10px;
+            font-family: sans-serif;
+            color: pink;
+            width: var(--chart-width);
+        }
+        .chart-wrap .title{
+            font-weight: bold;
+            padding:0 0;
+            text-align: center;
+            white-space: nowrap;
+        }
+        .chart-wrap.horizontal .grid{
+            transform: rotate(-90deg);
+        }
+        .chart-wrap.horizontal .bar::after{
+            transform: rotate(45deg);
+            padding-top: 0px;
+            display: block;
+        }
+        .chart-wrap .grid{
+            margin-left: 140px;
+            position: relative;
+            padding: 5x 0 5px 0;
+            height: auto;
+            width: auto;
+            border-left: 2px solid var(--grid-color);
+        }
+
+        .chart-wrap .grid::before{
+            font-size: 0.8m;
+            font-weight: bold;
+            content: '0%';
+            position: absolute;
+            left: -0.5em;
+            top: -1.5em;
+        }
+        .chart-wrap .grid::after{
+            font-size: 0.8em;
+            font-weight: bold;
+            content: '100%';
+            position: absolute;
+            right: -1.5em;
+            top: -1.5em;
+        }
+        .chart-wrap.horizontal .grid::before , .chart-wrap.horizontal .grid::after{
+            transform: rotate(90deg);
+        }
+        .chart-wrap .bar{
+            width: var(--bar-value);
+            height: var(--bar-color);
+            margin: var(--bar-spacing);
+            background-color: var(--bar-color);
+            border-radius:0 (--bar-rounded)var(--bar-rounded) 0;
+            
+        }
+        .chart-wrap .bar:hover{
+            opacity: 0.7;
+        }
+        .chart-wrap .bar::after{
+            content: attr(data-name);
+            margin-left: 100%;
+            padding: 80px;
+            display: inline-block;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+    <div id="linea">
+
+    </div>
+    <div id="linea2">
+        <label id="titulo" for="text">Reportes</label>
+    </div>
+    
+    <div class="area" style="height: auto;">
+        <div id="usuario">
+
+            <form action="/probando/" method="GET">
+                {% if dato.usuarios %}
+                <h2>Listado de Correos:</h2>
+                <ul style="font-size: 24px; font-family: Georgia, 'Times New Roman', Times, serif;">
+                    {% for us in dato.usuarios %}
+                    <li>{{us}}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                {% csrf_token %}
+                <h1 for="text">Información por fecha y usuario que reporta</h1><br>
+                <select name="opcion" id="opcion">
+                    {% for f in fecha.fecha %}
+                    <option  value="{{f}}">{{f}}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit">Generar Gráfica</button>
+              
+                
+                </form>
+        </div>
+        <br>
+        
+       <div id="linea3">
+
+       </div>
+        <div id="error">
+            <form action="/filtro2/" method="GET">
+
+                {% csrf_token %}
+                <h1 for="text">Información por fecha y código de error</h1><br>
+                <select name="opcion" id="opcion">
+                    {% for f in fecha.fecha %}
+                    <option  value="{{f}}">{{f}}</option>
+                    {% endfor %}
+              
+                </select>
+                <button type="submit">Generar Gráfica</button>
+                <center>
+                    <h1>Fecha :{{dato.fecha}}</h1>
+                </center>
+                {% if dato.error %}
+                <h2>Códigos de error:</h2>
+                
+                <ul style="font-size: 24px; font-family: Georgia, 'Times New Roman', Times, serif;">
+                    {% for er in dato.error %}
+                    <li>{{er}}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                </form>
+
+              
+
+        </div>
+        
+        <div id="grafica" style="margin: auto 200px;">
+            {% csrf_token %}
+            <div class="chart-wrap horizontal">
+                
+           <div class="grid">
+               {% for por in dato.porcentaje %}
+               
+                    <div class="bar" style="--bar-value:{{por}}%" data-name="{{por}}" title="."></div>
+               
+                {% endfor %}    
+           
+           </div>
+        </div>
+
+        </div>
+      
+    </div>
+
+    
+</body>
+</html>
